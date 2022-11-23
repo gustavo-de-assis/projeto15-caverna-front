@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import ProductPage from "./pages/ProductPage/ProductPage";
 import PurchasePage from "./pages/PurchasePage/PurchasePage";
+import SignUpPage from "./pages/SignUpPage/SignUpPage";
 
 function App() {
     // State to hold user information after login
@@ -16,6 +17,7 @@ function App() {
                 <GlobalStyle />
                 <Routes>
                     <Route path="/" element={<LoginPage />} />
+                    <Route path="/signUp" element={<SignUpPage />} />
                     <Route
                         path="/product/:productId"
                         element={<ProductPage />}
