@@ -1,25 +1,30 @@
 import axios from "axios";
 import { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ProjectContext } from "../../constants/Context";
+import { loginUrl } from "../../constants/urls";
 
 export default function LoginPage() {
     const [localUser, setLocalUser] = useState({ email: "", password: "" });
     const { setUser } = useContext(ProjectContext);
+    const navigate = useNavigate()
 
-    function login(event) {
+    async function login(event) {
         event.preventDefault();
         try {
-            const body = localUser;
-            console.log(body)
+            const res = await axios.post(loginUrl, localUser);
+            console.log(res);
+            setUser(res.data)
+            navigate('/main')
         } catch (err) {
-            console.log(err)
-            alert(err.response.data)
+            console.log(err);
+            alert(err.response.data);
         }
     }
-
     return (
         <StyledPage>
+            <StyledImg src="https://www.svgrepo.com/show/307481/dragon-head-evil-legend-myth.svg" />
             <StyledP>Login</StyledP>
             <StyledForm onSubmit={login}>
                 <input
@@ -40,10 +45,13 @@ export default function LoginPage() {
                     }
                     required
                 />
-                <button type="submit">
-                    Sign In
-                </button>
+                <button type="submit">Entrar</button>
             </StyledForm>
+            <Link to={"/signUp"}>
+                <StyledButton>
+                    Ainda não tenho uma conta. Criar uma!
+                </StyledButton>
+            </Link>
         </StyledPage>
     );
 }
@@ -53,6 +61,10 @@ const StyledPage = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+`;
+
+const StyledImg = styled.img`
+    width: 100px;
 `;
 
 const StyledP = styled.p`
@@ -82,4 +94,10 @@ const StyledForm = styled.form`
         border-radius: 5px;
         border: 1px solid;
     }
+`;
+
+const StyledButton = styled.button`
+    margin-top: 20px;
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
 `;
