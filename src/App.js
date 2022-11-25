@@ -16,19 +16,34 @@ function App() {
         token: "",
         cart: [],
     });
-    console.log(user);
+
+    const [targetProduct, setTargetProduct] = useState({
+        name: "",
+        image: "",
+        description: "",
+        price: "",
+    });
+
+    const [search, setSearch] = useState("");
+
     return (
-        <ProjectContext.Provider value={{ user, setUser }}>
+        <ProjectContext.Provider
+            value={{
+                user,
+                setUser,
+                targetProduct,
+                setTargetProduct,
+                search,
+                setSearch,
+            }}
+        >
             <BrowserRouter>
                 <GlobalStyle />
                 <Routes>
                     <Route path="/" element={<LoginPage />} />
                     <Route path="/signUp" element={<SignUpPage />} />
                     <Route path="/main" element={<MainPage />} />
-                    <Route
-                        path="/product/:productId"
-                        element={<ProductPage />}
-                    />
+                    <Route path="/product" element={<ProductPage />} />
                     <Route
                         path="/purchase/:productId"
                         element={<PurchasePage />}
