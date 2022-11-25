@@ -35,3 +35,13 @@ export const StyledForm = styled.form`
         border: 1px solid;
     }
 `;
+
+export const StyledImg = styled.img`
+    width: 300px;
+`;
+
+export const StyledButton = styled.button`
+margin-top: 20px;
+border: none;
+background-color: rgba(0, 0, 0, 0);
+`;
