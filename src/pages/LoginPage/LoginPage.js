@@ -24,7 +24,7 @@ export default function LoginPage() {
     }
     return (
         <StyledPage>
-            <StyledImg src="https://www.svgrepo.com/show/307481/dragon-head-evil-legend-myth.svg" />
+            <StyledImg src="https://i.imgur.com/knHSdSr.png" />
             <StyledP>Login</StyledP>
             <StyledForm onSubmit={login}>
                 <input
@@ -64,7 +64,7 @@ const StyledPage = styled.div`
 `;
 
 const StyledImg = styled.img`
-    width: 100px;
+    width: 300px;
 `;
 
 const StyledP = styled.p`

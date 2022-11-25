@@ -1,32 +1,33 @@
 import axios from "axios";
 import { useState } from "react"
-import { useNavigate } from "react-router-dom";
-import { StyledPage, StyledForm, StyledP } from "../../theme/Styles"
+import { Link, useNavigate } from "react-router-dom";
+import { StyledPage, StyledForm, 
+    StyledP, StyledImg, StyledButton } from "../../theme/Styles"
 
 export default function SignUpPage() {
 
-    const [userInfo, setUserInfo] = useState({name:"", email:"", password: ""})
+    const [userInfo, setUserInfo] = useState({ name: "", email: "", password: "" })
     const navigate = useNavigate();
 
-    
-    function formHandler(e){
-        const {name, value} = e.target;
-        setUserInfo({...userInfo, [name]:value})
+
+    function formHandler(e) {
+        const { name, value } = e.target;
+        setUserInfo({ ...userInfo, [name]: value })
     }
 
-    function signUpUser(e){
+    function signUpUser(e) {
         e.preventDefault();
 
         //Gathering user info
-        const newUser = {...userInfo};
-        
+        const newUser = { ...userInfo };
+
         //Connecting to API
         const URL = 'http://localhost:5000/signUp';
 
-        axios.post(URL, newUser).then((ans)=>{
+        axios.post(URL, newUser).then((ans) => {
             console.log("Cadastro realizado!", ans.data);
             navigate("/");
-        }).catch((err)=>{
+        }).catch((err) => {
             console.log(err.response.data)
         })
 
@@ -34,13 +35,14 @@ export default function SignUpPage() {
 
     return (
         <StyledPage>
+            <StyledImg src="https://i.imgur.com/knHSdSr.png" />
             <StyledP>Sign-Up!</StyledP>
             <StyledForm onSubmit={signUpUser}>
-                <input 
+                <input
                     name="name"
                     type="text"
                     value={userInfo.name}
-                    placeholder="Name"
+                    placeholder="Nome"
                     onChange={formHandler}
                     required
                 />
@@ -61,10 +63,14 @@ export default function SignUpPage() {
                     required
                 />
                 <button type="submit">
-                    Continue
+                    Cadastrar!
                 </button>
             </StyledForm>
-
+            <Link to="/">
+                <StyledButton>
+                    Já possui uma conta? Faça Login!
+                </StyledButton>
+            </Link>
         </StyledPage>
     )
 
