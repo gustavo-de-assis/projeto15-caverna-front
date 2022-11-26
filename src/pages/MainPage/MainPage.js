@@ -1,32 +1,56 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ProjectContext } from "../../constants/Context";
 import { StyledPage } from "../../theme/Styles";
+import { AiOutlineShoppingCart, AiOutlineSearch } from "react-icons/ai";
+
 
 export default function MainPage() {
-    const navigate = useNavigate();
-    const { setTargetProduct } = useContext(ProjectContext);
+    const navigate = useNavigate();	
+    const { setTargetProduct, search, setSearch } = useContext(ProjectContext);
     const [productList, setProductList] = useState([]);
-    
-    useEffect(()=>{
+    const [tracker, setTracker] = useState(0);
+
+    useEffect(() => {
         const URL = "http://localhost:5000/products";
         axios.get(URL)
-        .then((ans)=> {
-            setProductList(ans.data)
-        }
-        ).catch((err)=>{
-            console.log(err.response.data);
-        })
-    },[]);
+            .then((ans) => {
+                setProductList(ans.data)
+            }
+            ).catch((err) => {
+                console.log(err.response.data);
+            })
+    }, []);
 
     function enterProdPage(product) {
         setTargetProduct(product);
         navigate(`/product`);
     }
 
-    if(productList === [] || productList === null){
+    function searchGame(event) {
+        event.preventDefault();
+		// Identify Enter keyUp
+		if (event.keyCode === 13) {
+			console.log(productList);
+			// Get obj of searched game
+			const result = productList.find(
+				(element) => element.name.toLowerCase() === search.toLowerCase()
+			);
+
+			// If game is in database, go to product page
+			if (result) {
+				setTracker(tracker + 1);
+				setTargetProduct(result);
+				navigate("/product");
+			} else {
+				alert("Infelizmente não temos esse jogo =/");
+			}
+	    }
+    }
+
+    if (productList === [] || productList === null) {
         return <MainContent>
             Carregando...
         </MainContent>
@@ -36,8 +60,26 @@ export default function MainPage() {
         <StyledPage>
             <PageHeader>
                 <img src="https://imgur.com/knHSdSr.png" alt="" />
+                <HeaderForm onSubmit={searchGame}>
+                    <input 
+                        type="text" 
+                        placeholder="Digite o jogo que deseja"
+                        onChange={(e)=> setSearch(e.target.value)}
+                        onKeyUp={searchGame}
+                    />
+                    <button type="submit">
+                        <AiOutlineSearch/>
+                    </button>
+                </HeaderForm>
 
-                <input type="text" placeholder="O que você busca?" />
+                <Link to="/cart">
+                    <AiOutlineShoppingCart 
+                        style={{fontSize: '30px',
+                                textDecoration : "none", 
+                                color : 'black'}
+                    } />
+                </Link>
+
             </PageHeader>
 
             <MainContent>
@@ -56,9 +98,9 @@ export default function MainPage() {
                         >
                             <img src={p.image} alt="" />
                             <div>
-                                <p>{p.name}</p>
+                                <h1>{p.name}</h1>
                                 <p>{p.description}</p>
-                                <p>R$ {p.price}</p>
+                                <h1 style={{ color: "orange" }}>R$ {p.price}</h1>
                             </div>
                         </ProductContainer>
                     ))}
@@ -92,6 +134,29 @@ const PageHeader = styled.div`
     top: 0;
     left: 0;
 `;
+
+const HeaderForm = styled.form`
+    position: relative;
+
+    input{
+        padding-left: 5px;
+    }
+
+    button{
+        border: 1px solid transparent;
+        background-color: inherit;
+
+        position: absolute;
+        right: 12px;
+        top: 7px;
+        z-index: 2;
+        :hover{
+            cursor: pointer;
+            opacity: 0.7;
+        }
+    }
+`
+
 const MainContent = styled.div`
     width: 100%;
 
@@ -128,19 +193,20 @@ const ProductList = styled.div`
 const ProductContainer = styled.div`
     display: flex;
     flex-direction: row;
-    border-radius: 8px;
-    border: 2px solid #888;
+    border-radius: 7px;
+    border: 1px solid #888;
     div {
         display: flex;
         flex-direction: column;
         padding: 10px;
     }
-    p {
+    p, h1 {
         margin-top: 10px;
     }
     img {
         aspect-ratio: 1/1;
         width: 110px;
+        margin: 10px;
     }
     :hover {
         opacity: 0.8;
