@@ -8,9 +8,10 @@ import { AiOutlineShoppingCart, AiOutlineSearch } from "react-icons/ai";
 
 
 export default function MainPage() {
-    const navigate = useNavigate();
-    const { setTargetProduct } = useContext(ProjectContext);
+    const navigate = useNavigate();	
+    const { setTargetProduct, search, setSearch } = useContext(ProjectContext);
     const [productList, setProductList] = useState([]);
+    const [tracker, setTracker] = useState(0);
 
     useEffect(() => {
         const URL = "http://localhost:5000/products";
@@ -28,6 +29,27 @@ export default function MainPage() {
         navigate(`/product`);
     }
 
+    function searchGame(event) {
+        event.preventDefault();
+		// Identify Enter keyUp
+		if (event.keyCode === 13) {
+			console.log(productList);
+			// Get obj of searched game
+			const result = productList.find(
+				(element) => element.name.toLowerCase() === search.toLowerCase()
+			);
+
+			// If game is in database, go to product page
+			if (result) {
+				setTracker(tracker + 1);
+				setTargetProduct(result);
+				navigate("/product");
+			} else {
+				alert("Infelizmente não temos esse jogo =/");
+			}
+	    }
+    }
+
     if (productList === [] || productList === null) {
         return <MainContent>
             Carregando...
@@ -38,9 +60,14 @@ export default function MainPage() {
         <StyledPage>
             <PageHeader>
                 <img src="https://imgur.com/knHSdSr.png" alt="" />
-                <HeaderForm>
-                    <input type="text" placeholder="Digite o jogo que deseja" />
-                    <button>
+                <HeaderForm onSubmit={searchGame}>
+                    <input 
+                        type="text" 
+                        placeholder="Digite o jogo que deseja"
+                        onChange={(e)=> setSearch(e.target.value)}
+                        onKeyUp={searchGame}
+                    />
+                    <button type="submit">
                         <AiOutlineSearch/>
                     </button>
                 </HeaderForm>
