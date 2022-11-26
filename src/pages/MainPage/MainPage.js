@@ -4,12 +4,13 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ProjectContext } from "../../constants/Context";
 import { StyledPage } from "../../theme/Styles";
-import { AiOutlineShoppingCart, AiOutlineSearch } from "react-icons/ai";
 
+import { AiOutlineShoppingCart, AiOutlineSearch } from "react-icons/ai";
+import { MdOutlineLogout } from "react-icons/md"
 
 export default function MainPage() {
-    const navigate = useNavigate();	
-    const { setTargetProduct, search, setSearch } = useContext(ProjectContext);
+    const navigate = useNavigate();
+    const { setTargetProduct, search, setSearch, user } = useContext(ProjectContext);
     const [productList, setProductList] = useState([]);
     const [tracker, setTracker] = useState(0);
 
@@ -29,25 +30,36 @@ export default function MainPage() {
         navigate(`/product`);
     }
 
+    function enterCartPage(){
+        console.log(user);
+
+        if(!user.email){
+            navigate("/");
+        }
+        else{
+            navigate("/cart")
+        }
+    }
+
     function searchGame(event) {
         event.preventDefault();
-		// Identify Enter keyUp
-		if (event.keyCode === 13) {
-			console.log(productList);
-			// Get obj of searched game
-			const result = productList.find(
-				(element) => element.name.toLowerCase() === search.toLowerCase()
-			);
+        // Identify Enter keyUp
+        if (event.keyCode === 13) {
+            console.log(productList);
+            // Get obj of searched game
+            const result = productList.find(
+                (element) => element.name.toLowerCase() === search.toLowerCase()
+            );
 
-			// If game is in database, go to product page
-			if (result) {
-				setTracker(tracker + 1);
-				setTargetProduct(result);
-				navigate("/product");
-			} else {
-				alert("Infelizmente não temos esse jogo =/");
-			}
-	    }
+            // If game is in database, go to product page
+            if (result) {
+                setTracker(tracker + 1);
+                setTargetProduct(result);
+                navigate("/product");
+            } else {
+                alert("Infelizmente não temos esse jogo =/");
+            }
+        }
     }
 
     if (productList === [] || productList === null) {
@@ -56,29 +68,31 @@ export default function MainPage() {
         </MainContent>
     }
 
+    const topMenuHeight = "110px";
+
     return (
         <StyledPage>
             <PageHeader>
                 <img src="https://imgur.com/knHSdSr.png" alt="" />
                 <HeaderForm onSubmit={searchGame}>
-                    <input 
-                        type="text" 
+                    <input
+                        type="text"
                         placeholder="Digite o jogo que deseja"
-                        onChange={(e)=> setSearch(e.target.value)}
+                        onChange={(e) => setSearch(e.target.value)}
                         onKeyUp={searchGame}
                     />
                     <button type="submit">
-                        <AiOutlineSearch/>
+                        <AiOutlineSearch />
                     </button>
                 </HeaderForm>
 
-                <Link to="/cart">
-                    <AiOutlineShoppingCart 
-                        style={{fontSize: '30px',
-                                textDecoration : "none", 
-                                color : 'black'}
-                    } />
-                </Link>
+                <UserContent>
+                    <div>
+                        <AiOutlineShoppingCart onClick={enterCartPage}/>
+                        <MdOutlineLogout />
+                    </div>
+                    <p>Bem vindo, Usuário</p>
+                </UserContent>
 
             </PageHeader>
 
@@ -111,29 +125,43 @@ export default function MainPage() {
 }
 
 const PageHeader = styled.div`
-    width: 100%;
-    height: 100px;
+   	width: 100%;
+	background-color: #ccc;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+	align-items: center;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 1;
+	height: ${(props) => props.topMenuHeight};
 
-    background-color: #ccc;
-
-    display: flex;
-    flex-direction: row;
-
-    justify-content: space-evenly;
-    align-items: center;
-    img {
-        width: 200px;
-    }
-    input {
-        height: 30px;
-        border: 2px solid #ccc;
-        border-radius: 10px;
-    }
-
-    position: fixed;
-    top: 0;
-    left: 0;
+	img {
+		width: 150px;
+	}
+	input {
+		height: 30px;
+		border-radius: 10px;
+		text-indent: 5px;
+	}
 `;
+
+const UserContent = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    div{
+        display: flex;
+        font-size: 30px;
+        gap: 10px;
+        margin: auto;
+    }
+    p{
+        font-size: 10px;
+    }
+`
 
 const HeaderForm = styled.form`
     position: relative;
@@ -165,22 +193,30 @@ const MainContent = styled.div`
 
     justify-content: center;
     align-items: center;
-    margin-top: 110px;
+    margin-top: 150px;
 `;
 const PageHighLights = styled.div`
     width: 100%;
     height: 250px;
 
-    background-color: #eef;
+    background-color: #fff;
     display: flex;
     flex-flow: row nowrap;
-    overflow-x: scroll;
+    overflow-x: hidden;
 `;
 const HighLight = styled.div`
+    width: 600px;
+    
+    display: flex;
+    flex-direction: row wrap;
+    margin: 100px;
+    
+    justify-content: space-around;
+    align-items: center;
     img {
         aspect-ratio: 13/9;
         width: 350px;
-        margin: 15px;
+        margin: 0 auto;
     }
 `;
 
