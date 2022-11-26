@@ -10,7 +10,7 @@ import { MdOutlineLogout } from "react-icons/md"
 
 export default function MainPage() {
     const navigate = useNavigate();
-    const { setTargetProduct, search, setSearch, user } = useContext(ProjectContext);
+    const { setTargetProduct, search, setSearch, user, setUser } = useContext(ProjectContext);
     const [productList, setProductList] = useState([]);
     const [tracker, setTracker] = useState(0);
 
@@ -39,6 +39,11 @@ export default function MainPage() {
         else{
             navigate("/cart");
         }
+    }
+
+    function logOut(){
+        setUser({});
+        navigate("/main");
     }
 
     function searchGame(event) {
@@ -88,10 +93,22 @@ export default function MainPage() {
 
                 <UserContent>
                     <div>
-                        <AiOutlineShoppingCart onClick={enterCartPage}/>
-                        <MdOutlineLogout />
+                        <AiOutlineShoppingCart 
+                            onClick={enterCartPage}
+                            style={{cursor: 'pointer'}}/>
+                        <MdOutlineLogout 
+                            onClick={logOut}
+                            style={{cursor: 'pointer'}}
+                        />
                     </div>
-                    <p>Bem vindo, Usuário</p>
+                    {
+                        user.name? <p>Bem vindo, {user.name}! </p> 
+                        :
+                        <Link to="/">
+                            <p>Faça Login!</p>
+                        </Link>
+
+                    }
                 </UserContent>
 
             </PageHeader>
@@ -156,10 +173,15 @@ const UserContent = styled.div`
         display: flex;
         font-size: 30px;
         gap: 10px;
-        margin: auto;
+        margin-bottom: 5px;
     }
     p{
         font-size: 10px;
+    }
+    a{
+        text-decoration: none;
+        color: black;
+
     }
 `
 
