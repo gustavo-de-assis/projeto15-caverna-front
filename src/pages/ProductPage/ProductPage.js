@@ -8,7 +8,7 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 import { IconContext } from "react-icons/lib";
 
 export default function ProductPage() {
-	const { targetProduct, setTargetProduct, search, setSearch } =
+	const { targetProduct, setTargetProduct, search, setSearch, user, setUser} =
 		useContext(ProjectContext);
 	const [game, setGame] = useState({});
 	const navigate = useNavigate();
@@ -49,7 +49,22 @@ export default function ProductPage() {
 	}
 
 	function addToCart() {
-		navigate("/cart");
+		const config = {
+			headers: {
+				Authorization: `Bearer ${user.token}`
+			}
+		}
+		const URL = "http://localhost:5000/cart";
+
+		axios.put(URL, game, config)
+		.then((ans)=>{
+			
+		})
+		.catch((err)=>{
+			console.log(err.response.data)
+		});
+		
+		navigate("/main");
 	}
 
 	const topMenuHeight = "110px";

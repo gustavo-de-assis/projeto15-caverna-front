@@ -6,29 +6,17 @@ import { StyledPage } from "../../theme/Styles";
 import { MdCancelPresentation } from "react-icons/md"
 
 export default function CartPage() {
-	const [usrCart, setUsrCart] = useState([
-		{
-			name: "Munchkin",
-			image: "https://http2.mlstatic.com/D_NQ_NP_997743-MLB47112270015_082021-O.jpg",
-			description:
-				"Entre na Dungeon, sacaneie seus amigos e deixe eles muito tristes por não conseguir o lv 10",
-			price: 149.99
-		},
-		{
-			name: "Munchkin",
-			image: "https://http2.mlstatic.com/D_NQ_NP_997743-MLB47112270015_082021-O.jpg",
-			description:
-				"Entre na Dungeon, sacaneie seus amigos e deixe eles muito tristes por não conseguir o lv 10",
-			price: 149.99
-		}
-	]); // cart content
-	const { targetProduct } = useContext(ProjectContext);
+	const [usrCart, setUsrCart] = useState([]); // cart content
+	const [total, setTotal] = useState(0);
+	const { targetProduct, user } = useContext(ProjectContext);
 
 	useEffect(() => {
-		//gathering info from backend
+		setUsrCart(user.cart);
+		let purchase = 0;
+		usrCart.map((p)=> purchase += p.price);
+		setTotal(purchase);
 
-		//const URL = "http://localhost:5000/"
-	}, []);
+	}, [usrCart]);
 
 	const topMenuHeight = "110px";
 
@@ -53,6 +41,7 @@ export default function CartPage() {
 						</CartItem>)
 				}
 			</CartTable>
+			<p> Total: {total}</p>
 		</MainContent>
 
 
