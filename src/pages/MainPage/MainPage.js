@@ -1,69 +1,35 @@
-import { useContext } from "react";
+import axios from "axios";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ProjectContext } from "../../constants/Context";
-import { StyledForm, StyledPage } from "../../theme/Styles";
+import { StyledPage } from "../../theme/Styles";
 
 export default function MainPage() {
     const navigate = useNavigate();
     const { setTargetProduct } = useContext(ProjectContext);
-
-    const product = [
-        {
-            name: "munchkin",
-            image: "https://http2.mlstatic.com/D_NQ_NP_997743-MLB47112270015_082021-O.jpg",
-            description:
-                "Entre na Dungeon, sacaneie seus amigos e deixe eles muito tristes por não conseguir o lv 10",
-            price: "149.99",
-        },
-        {
-            name: "munchkin",
-            image: "https://http2.mlstatic.com/D_NQ_NP_997743-MLB47112270015_082021-O.jpg",
-            description:
-                "Entre na Dungeon, sacaneie seus amigos e deixe eles muito tristes por não conseguir o lv 10",
-            price: "149.99",
-        },
-        {
-            name: "munchkin",
-            image: "https://http2.mlstatic.com/D_NQ_NP_997743-MLB47112270015_082021-O.jpg",
-            description:
-                "Entre na Dungeon, sacaneie seus amigos e deixe eles muito tristes por não conseguir o lv 10",
-            price: "149.99",
-            productId: "1",
-        },
-        {
-            name: "munchkin",
-            image: "https://http2.mlstatic.com/D_NQ_NP_997743-MLB47112270015_082021-O.jpg",
-            description:
-                "Entre na Dungeon, sacaneie seus amigos e deixe eles muito tristes por não conseguir o lv 10",
-            price: "149.99",
-        },
-        {
-            name: "munchkin",
-            image: "https://http2.mlstatic.com/D_NQ_NP_997743-MLB47112270015_082021-O.jpg",
-            description:
-                "Entre na Dungeon, sacaneie seus amigos e deixe eles muito tristes por não conseguir o lv 10",
-            price: "149.99",
-        },
-        {
-            name: "munchkin",
-            image: "https://http2.mlstatic.com/D_NQ_NP_997743-MLB47112270015_082021-O.jpg",
-            description:
-                "Entre na Dungeon, sacaneie seus amigos e deixe eles muito tristes por não conseguir o lv 10",
-            price: "149.99",
-        },
-        {
-            name: "munchkin",
-            image: "https://http2.mlstatic.com/D_NQ_NP_997743-MLB47112270015_082021-O.jpg",
-            description:
-                "Entre na Dungeon, sacaneie seus amigos e deixe eles muito tristes por não conseguir o lv 10",
-            price: "149.99",
-        },
-    ];
+    const [productList, setProductList] = useState([]);
+    
+    useEffect(()=>{
+        const URL = "http://localhost:5000/products";
+        axios.get(URL)
+        .then((ans)=> {
+            setProductList(ans.data)
+        }
+        ).catch((err)=>{
+            console.log(err.response.data);
+        })
+    },[]);
 
     function enterProdPage(product) {
         setTargetProduct(product);
         navigate(`/product`);
+    }
+
+    if(productList === [] || productList === null){
+        return <MainContent>
+            Carregando...
+        </MainContent>
     }
 
     return (
@@ -71,19 +37,19 @@ export default function MainPage() {
             <PageHeader>
                 <img src="https://imgur.com/knHSdSr.png" alt="" />
 
-                <input type="text" placeholder="Escolha sua classe" />
+                <input type="text" placeholder="O que você busca?" />
             </PageHeader>
 
             <MainContent>
                 <PageHighLights>
-                    {product.map((p, idx) => (
+                    {productList.map((p, idx) => (
                         <HighLight key={idx}>
                             <img src={p.image} alt="" />
                         </HighLight>
                     ))}
                 </PageHighLights>
                 <ProductList>
-                    {product.map((p, idx) => (
+                    {productList.map((p, idx) => (
                         <ProductContainer
                             key={idx}
                             onClick={() => enterProdPage(p)}
