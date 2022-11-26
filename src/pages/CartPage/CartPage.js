@@ -1,27 +1,61 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ProjectContext } from "../../constants/Context";
 import { StyledPage } from "../../theme/Styles";
+import { MdCancelPresentation } from "react-icons/md"
 
 export default function CartPage() {
-
+	const [usrCart, setUsrCart] = useState([
+		{
+			name: "Munchkin",
+			image: "https://http2.mlstatic.com/D_NQ_NP_997743-MLB47112270015_082021-O.jpg",
+			description:
+				"Entre na Dungeon, sacaneie seus amigos e deixe eles muito tristes por não conseguir o lv 10",
+			price: 149.99
+		},
+		{
+			name: "Munchkin",
+			image: "https://http2.mlstatic.com/D_NQ_NP_997743-MLB47112270015_082021-O.jpg",
+			description:
+				"Entre na Dungeon, sacaneie seus amigos e deixe eles muito tristes por não conseguir o lv 10",
+			price: 149.99
+		}
+	]); // cart content
 	const { targetProduct } = useContext(ProjectContext);
-	useEffect(()=>{
 
-	},[]);
+	useEffect(() => {
+		//gathering info from backend
+
+		//const URL = "http://localhost:5000/"
+	}, []);
+
 	const topMenuHeight = "110px";
 
 	return <StyledPage>
 		<PageHeader>
-			<img src="https://imgur.com/knHSdSr.png" alt="" />
+			<Link to={"/main"}>
+				<img src="https://imgur.com/knHSdSr.png" alt="" />
+			</Link>
 		</PageHeader>
 		<MainContent>
 			<CartTable>
-				
+				{
+					usrCart.length === 0 ? <p>Ainda não há items no carrinho</p>
+						:
+						usrCart.map((item, idx) => <CartItem key={idx}>
+							<img src={item.image} alt="" />
+							<p>{item.name}</p>
+							<p>R${item.price}</p>
+							<button>
+								<MdCancelPresentation />
+							</button>
+						</CartItem>)
+				}
 			</CartTable>
 		</MainContent>
 
-		
+
 	</StyledPage>;
 }
 
@@ -64,8 +98,35 @@ const CartTable = styled.div`
 	
 	display: flex;
 	flex-direction: column;
+	align-items: center;
 	
-	background-color: #efe;
-
 	overflow: hidden;
+`
+const CartItem = styled.div`
+	width: 95%;
+	height: 80px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+
+	border: 1px solid #ddd;
+	border-radius: 3px;
+
+	img{
+		width: 50px;
+		padding: 0 20px;
+		margin-top: 10px;
+	}
+	button{
+		color: red;
+		font-size: 22px;
+		background-color: inherit;
+		padding-right: 5px;
+		:hover{
+			color: #aa2255;
+			cursor: pointer;
+		}
+	}
+
 `

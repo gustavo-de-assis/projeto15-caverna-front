@@ -37,7 +37,7 @@ export default function MainPage() {
             navigate("/");
         }
         else{
-            navigate("/cart")
+            navigate("/cart");
         }
     }
 
