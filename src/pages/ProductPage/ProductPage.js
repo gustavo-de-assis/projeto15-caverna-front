@@ -61,10 +61,10 @@ export default function ProductPage() {
 			
 		})
 		.catch((err)=>{
-			console.log(err.response.data)
+			console.log(err)
 		});
 		
-		navigate("/main");
+		navigate("/cart");
 	}
 
 	const topMenuHeight = "110px";
