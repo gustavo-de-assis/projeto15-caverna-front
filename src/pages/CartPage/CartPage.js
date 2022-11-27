@@ -45,6 +45,10 @@ export default function CartPage() {
         }
     }
 
+    function purchaseItems() {
+        navigate('/purchase');
+    }
+
     let purchase = 0;
     usrCart.map((p) => (purchase += p.price));
     const topMenuHeight = "110px";
@@ -73,8 +77,19 @@ export default function CartPage() {
                         ))
                     )}
                 </CartTable>
-                <p> Total: {purchase}</p>
             </MainContent>
+            <PageFooter>
+                { usrCart.length === 0 ?
+                (<p>Você ainda não adicionou itens ao carrinho!</p>)
+                :
+               (<> 
+               <h1> Total: R$ {purchase}</h1>
+                <StyledBuyButton onClick={purchaseItems}>
+                    Comprar
+                </StyledBuyButton> 
+                </>)
+                }
+            </PageFooter>
         </StyledPage>
     );
 }
@@ -110,16 +125,18 @@ const MainContent = styled.div`
     justify-content: center;
     align-items: center;
     margin-top: 150px;
+        
 `;
 const CartTable = styled.div`
     width: 80%;
-    height: 500px;
+    max-height: 500px;
 
     display: flex;
     flex-direction: column;
     align-items: center;
 
-    overflow: hidden;
+    overflow-y: scroll;
+   
 `;
 const CartItem = styled.div`
     width: 95%;
@@ -148,3 +165,41 @@ const CartItem = styled.div`
         }
     }
 `;
+
+const StyledBuyButton = styled.button`
+    display: flex;
+    width: 250px;
+    height: 40px;
+    margin: 10px 0 20px 0;
+    background-color: goldenrod;
+    justify-content: space-evenly;
+    align-items: center;
+    border-radius: 10px;
+    cursor: pointer;
+    :hover{
+        opacity: 0.8;
+    }
+    p {
+        color: black;
+        font-size: 20px;
+        font-weight: 700;
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+`;
+
+const PageFooter = styled.div`
+    width: 100%;
+    height: 100px;
+    background-color: #ccc;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+
+`
