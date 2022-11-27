@@ -1,7 +1,7 @@
-export const loginUrl = "http://localhost:5000/login";
+export const loginUrl = "https://caverna-api.onrender.com/login";
 
-export const signUpUrl = "http://localhost:5000/signUp";
+export const signUpUrl = "https://caverna-api.onrender.com/signUp";
 
-export const productsUrl = "http://localhost:5000/products";
+export const productsUrl = "https://caverna-api.onrender.com/products";
 
-export const userCartUrl = "http://localhost:5000/userCart";
+export const userCartUrl = "https://caverna-api.onrender.com/userCart";
