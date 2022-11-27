@@ -43,7 +43,7 @@ export default function MainPage() {
 
     function logOut(){
         setUser({});
-        navigate("/main");
+        navigate("/");
     }
 
     function searchGame(event) {
