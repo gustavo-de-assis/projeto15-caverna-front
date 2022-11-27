@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ProjectContext } from "../../constants/Context";
-import { productsUrl } from "../../constants/urls";
+import { productsUrl, userCartUrl } from "../../constants/urls";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { IconContext } from "react-icons/lib";
 import { MdOutlineLogout } from "react-icons/md";
@@ -65,7 +65,7 @@ export default function ProductPage() {
 
         axios
             //.put(URL, game, config)
-            .put(URL, game, config)
+            .put(userCartUrl, game, config)
             .then((ans) => {})
             .catch((err) => {
                 console.log(err.response.data);
