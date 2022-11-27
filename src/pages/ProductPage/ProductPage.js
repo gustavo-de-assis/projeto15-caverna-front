@@ -61,9 +61,10 @@ export default function ProductPage() {
                 Authorization: `Bearer ${user.token}`,
             },
         };
-        const URL = "http://localhost:5000/cart";
+       // const URL = "http://localhost:5000/cart";
 
         axios
+            //.put(URL, game, config)
             .put(URL, game, config)
             .then((ans) => {})
             .catch((err) => {
