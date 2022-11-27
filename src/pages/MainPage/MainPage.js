@@ -7,6 +7,7 @@ import { StyledPage } from "../../theme/Styles";
 
 import { AiOutlineShoppingCart, AiOutlineSearch } from "react-icons/ai";
 import { MdOutlineLogout } from "react-icons/md"
+import { productsUrl } from "../../constants/urls";
 
 export default function MainPage() {
     const navigate = useNavigate();
@@ -15,8 +16,8 @@ export default function MainPage() {
     const [tracker, setTracker] = useState(0);
 
     useEffect(() => {
-        const URL = "http://localhost:5000/products";
-        axios.get(URL)
+
+        axios.get(productsUrl)
             .then((ans) => {
                 setProductList(ans.data)
             }
