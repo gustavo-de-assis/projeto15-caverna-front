@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom";
+import { signUpUrl } from "../../constants/urls";
 import { StyledPage, StyledForm, 
     StyledP, StyledImg, StyledButton } from "../../theme/Styles"
 
@@ -22,9 +23,8 @@ export default function SignUpPage() {
         const newUser = { ...userInfo };
 
         //Connecting to API
-        const URL = 'http://localhost:5000/signUp';
 
-        axios.post(URL, newUser).then((ans) => {
+        axios.post(signUpUrl, newUser).then((ans) => {
             console.log("Cadastro realizado!", ans.data);
             navigate("/");
         }).catch((err) => {
