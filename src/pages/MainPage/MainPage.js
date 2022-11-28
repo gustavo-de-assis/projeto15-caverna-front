@@ -37,7 +37,6 @@ export default function MainPage() {
     }
 
     function enterCartPage() {
-        console.log(user);
 
         if (!user.email) {
             navigate("/");
