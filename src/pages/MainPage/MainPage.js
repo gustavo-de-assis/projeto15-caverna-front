@@ -13,17 +13,22 @@ export default function MainPage() {
     const navigate = useNavigate();
     const { setTargetProduct, search, setSearch, user, setUser } = useContext(ProjectContext);
     const [productList, setProductList] = useState([]);
+    const [highlights, setHighlights] = useState([]);
     const [tracker, setTracker] = useState(0);
 
     useEffect(() => {
 
         axios.get(productsUrl)
             .then((ans) => {
-                setProductList(ans.data)
+                const data = ans.data;
+                setProductList(data);
+                const hi = data.sort(() => Math.random() - 0.5).filter((a,i)=> i < 5);
+                setHighlights(hi);
             }
             ).catch((err) => {
                 console.log(err.response.data);
             })
+
     }, []);
 
     function enterProdPage(product) {
@@ -31,18 +36,18 @@ export default function MainPage() {
         navigate(`/product`);
     }
 
-    function enterCartPage(){
+    function enterCartPage() {
         console.log(user);
 
-        if(!user.email){
+        if (!user.email) {
             navigate("/");
         }
-        else{
+        else {
             navigate("/cart");
         }
     }
 
-    function logOut(){
+    function logOut() {
         setUser({});
         navigate("/");
     }
@@ -94,20 +99,20 @@ export default function MainPage() {
 
                 <UserContent>
                     <div>
-                        <AiOutlineShoppingCart 
+                        <AiOutlineShoppingCart
                             onClick={enterCartPage}
-                            style={{cursor: 'pointer'}}/>
-                        <MdOutlineLogout 
+                            style={{ cursor: 'pointer' }} />
+                        <MdOutlineLogout
                             onClick={logOut}
-                            style={{cursor: 'pointer'}}
+                            style={{ cursor: 'pointer' }}
                         />
                     </div>
                     {
-                        user.name? <p>Bem vindo, {user.name}! </p> 
-                        :
-                        <Link to="/">
-                            <p>Faça Login!</p>
-                        </Link>
+                        user.name ? <p>Bem vindo, {user.name}! </p>
+                            :
+                            <Link to="/">
+                                <p>Faça Login!</p>
+                            </Link>
 
                     }
                 </UserContent>
@@ -115,9 +120,13 @@ export default function MainPage() {
             </PageHeader>
 
             <MainContent>
+                <h1 style={{fontSize : '35px', marginBottom :'10px'}}>Destaques</h1>
                 <PageHighLights>
-                    {productList.map((p, idx) => (
-                        <HighLight key={idx}>
+                    {highlights.map((p, idx) => (
+                        <HighLight
+                            key={idx}
+                            onClick={() => enterProdPage(p)}
+                        >
                             <img src={p.image} alt="" />
                         </HighLight>
                     ))}
@@ -225,8 +234,9 @@ const PageHighLights = styled.div`
     background-color: #fff;
     display: flex;
     flex-flow: row nowrap;
-    overflow-x: hidden;
+    overflow-x: scroll;
 `;
+
 const HighLight = styled.div`
     width: 600px;
     
