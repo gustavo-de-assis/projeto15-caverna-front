@@ -37,7 +37,6 @@ export default function ProductPage() {
     function searchGame(event) {
         // Identify Enter keyUp
         if (event.keyCode === 13) {
-            console.log(products);
             // Get obj of searched game
             const result = products.find(
                 (element) => element.name.toLowerCase() === search.toLowerCase()
@@ -61,12 +60,10 @@ export default function ProductPage() {
                 Authorization: `Bearer ${user.token}`,
             },
         };
-       // const URL = "http://localhost:5000/cart";
 
         axios
-            //.put(URL, game, config)
             .put(cartUrl, game, config)
-            .then((ans) => {})
+            .then((ans) => {console.log(ans.data)})
             .catch((err) => {
                 console.log(err.response.data);
             });
@@ -75,7 +72,6 @@ export default function ProductPage() {
     }
 
     function enterCartPage() {
-        console.log(user);
 
         if (!user.email) {
             navigate("/");

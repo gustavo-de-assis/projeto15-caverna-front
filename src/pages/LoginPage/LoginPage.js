@@ -14,7 +14,6 @@ export default function LoginPage() {
         event.preventDefault();
         try {
             const res = await axios.post(loginUrl, localUser);
-            console.log(res);
             setUser(res.data)
             navigate('/main')
         } catch (err) {
